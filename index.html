@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Product Store</title>
+
+
+</head>
+<body>
+    <header  class="navbar">
+        <div class="logo">
+        <h1>Product Store</h1>
+
+        </div>
+
+        <div class="nav-search">
+            <input type="text" id="searchbox" placeholder="Search the product">
+        </div>
+
+
+        <button id="carttoggle" type="button" aria-expanded="false" aria-controls="showcart" aria-label="View basket, 0 items">
+            Basket <span class="cart-count" id="cartcount">0</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <!--page heading-->
+        <h2>Our Products</h2>
+        <p>Discover our wide range of high-quality products</p>
+
+<!-- filter and sorting -->
+ <section class="filters">
+    <select  id="menu">
+        <option value="all">ALL</option>
+        <option value="electronics">Electronics</option>
+        <option value="footwear">Footwear</option>
+        <option value="accessories">Accessories</option>
+        <option value="clothing">Clothing</option>
+        <option value="home appliances">Home Appliances</option>
+        <option value="kitchenware">Kitchenware</option>
+    </select>
+    <select id="sortingitem">
+        <option value="low-to-high">Low to High</option>
+        <option value="high-to-low">High to Low</option>
+        <option value="high-rating">Highest Rating</option>
+
+
+    </select>
+    </section>
+    <!-- product display -->
+       <!-- Products -->
+        <section class="products-section">
+            <div id="showproduct" class="product-grid"></div>
+        </section>
+
+    </main>
+<!-- Cart --> 
+ 
+<aside id="showcart" class="cart-panel" hidden></aside>
+      <script>
+      const products = [
+    {
+        id: 4535,
+        name: "Laptop",
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85",
+        price: 45435,
+        category: "electronics",
+        stock: 5,
+        rating: { average: 3.4, count: 128 }
+    },
+    {
+        id: 4536,
+        name: "Wireless Mouse",
+        image: "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=85",
+        price: 1200,
+        category: "electronics",
+        stock: 25,
+        rating: { average: 4.5, count: 340 }
+    },
+    {
+        id: 4537,
+        name: "Smart Watch",
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85",
+        price: 5500,
+        category: "electronics",
+        stock: 12,
+        rating: { average: 4.2, count: 95 }
+    },
+    {
+        id: 4538,
+        name: "Running Shoes",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85",
+        price: 3200,
+        category: "footwear",
+        stock: 18,
+        rating: { average: 4.0, count: 210 }
+    },
+    {
+        id: 4539,
+        name: "Leather Wallet",
+        image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=85",
+        price: 1500,
+        category: "accessories",
+        stock: 30,
+        rating: { average: 4.6, count: 85 }
+    },
+    {
+        id: 4540,
+        name: "Bluetooth Speaker",
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=85",
+        price: 4500,
+        category: "electronics",
+        stock: 8,
+        rating: { average: 4.3, count: 150 }
+    },
+    {
+        id: 4541,
+        name: "Cotton T-Shirt",
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85",
+        price: 999,
+        category: "clothing",
+        stock: 0,
+        rating: { average: 3.9, count: 420 }
+    },
+    {
+        id: 4542,
+        name: "Denim Jeans",
+        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=85",
+        price: 2499,
+        category: "clothing",
+        stock: 15,
+        rating: { average: 4.1, count: 180 }
+    },
+    {
+        id: 4543,
+        name: "Electric Kettle",
+        image: "https://images.unsplash.com/photo-1594213114663-d94db9b1718a?auto=format&fit=crop&w=900&q=85",
+        price: 2800,
+        category: "home appliances",
+        stock: 6,
+        rating: { average: 4.4, count: 65 }
+    },
+    {
+        id: 4544,
+        name: "Backpack",
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85",
+        price: 1850,
+        category: "accessories",
+        stock: 22,
+        rating: { average: 4.7, count: 310 }
+    },
+    {
+        id: 4545,
+        name: "Gaming Keyboard",
+        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85",
+        price: 3500,
+        category: "electronics",
+        stock: 10,
+        rating: { average: 4.5, count: 115 }
+    },
+    {
+        id: 4546,
+        name: "Sunglasses",
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85",
+        price: 1250,
+        category: "accessories",
+        stock: 40,
+        rating: { average: 3.8, count: 90 }
+    },
+    {
+        id: 4547,
+        name: "Coffee Mug",
+        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=900&q=85",
+        price: 450,
+        category: "kitchenware",
+        stock: 100,
+        rating: { average: 4.8, count: 540 }
+    },
+    {
+        id: 4548,
+        name: "Desk Lamp",
+        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85",
+        price: 1600,
+        category: "home appliances",
+        stock: 14,
+        rating: { average: 4.2, count: 75 }
+    },
+    {
+        id: 4549,
+        name: "Water Bottle (Stainless Steel)",
+        image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85",
+        price: 950,
+        category: "kitchenware",
+        stock: 35,
+        rating: { average: 4.3, count: 230 }
+    }
+];
+
+
+const textbox = document.getElementById("searchbox");
+const textshow = document.getElementById("showproduct");
+const selectitem = document.getElementById("menu");
+const sortingproduct = document.getElementById("sortingitem")
+const displaycart = document.getElementById("showcart");
+const carttoggle = document.getElementById("carttoggle");
+const cartcount = document.getElementById("cartcount");
+
+
+
+
+let cart = [];
+
+
+
+
+
+// load cart
+ function loadcart(){
+    const cartdate = localStorage.getItem("cart");
+    if(cartdate){
+        cart = JSON.parse(cartdate);
+    }
+ }
+
+
+ // save cart
+ function savecart() {
+    const addcartforlocalstorage = JSON.stringify(cart);
+    localStorage.setItem("cart", addcartforlocalstorage);
+ }
+
+function displayproducts(myproduct) {
+    textshow.innerHTML = "";
+
+    if (myproduct.length === 0) {
+        textshow.innerText = "Product not found";
+        return;
+    }
+
+    myproduct.forEach((product) => {
+        const card = document.createElement("div");
+        card.classList.add("product-card");
+        const image = document.createElement("img");
+        image.classList.add("product-image");
+        image.src = product.image;
+        image.alt = product.name;
+        image.loading = "lazy";
+        image.onerror = function() {
+            image.src = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=85";
+        };
+        const name = document.createElement("h4");
+        name.classList.add("product-name");
+        name.innerText = product.name;
+    
+
+        const id = document.createElement("p");
+        id.innerText = `ID: ${product.id}`;
+
+        const price = document.createElement("p");
+        price.classList.add("product-price");
+        price.innerText = `Rs. ${product.price}`;
+        
+
+        const category = document.createElement("p");
+        category.classList.add("product-category");
+        category.innerText = `Category: ${product.category}`;
+
+        const stock = document.createElement("p");
+        stock.classList.add("product-stock");
+        stock.innerText = product.stock === 0 ? "Out of stock" : `Stock: ${product.stock}`;
+
+        const rating = document.createElement("p");
+        rating.classList.add("product-rating");
+        rating.innerText = `Rating: ${product.rating.average} (${product.rating.count} reviews)`;
+
+        const cartbutton = document.createElement("button");
+        cartbutton.classList.add("add-to-cart");
+        cartbutton.innerText = "Add to cart";
+        cartbutton.disabled = product.stock === 0;
+        cartbutton.addEventListener("click", function() {
+            addtocard(product.id);
+        });
+
+        card.append(image, category, name, rating, price, stock, cartbutton);
+        textshow.append(card);
+    });
+}
+
+function updateproducts() {
+    const searchtext = textbox.value.toLowerCase().trim();
+    const selectedcategory = selectitem.value;
+    const sortoption = sortingproduct.value;
+
+    let filteredproducts = products.filter((product) => {
+        const matchesname = product.name.toLowerCase().includes(searchtext);
+        const matchescategory = selectedcategory === "all" || product.category === selectedcategory;
+        return matchesname && matchescategory;
+    });
+
+    if (sortoption === "low-to-high") {
+        filteredproducts.sort((a, b) => a.price - b.price);
+    } else if (sortoption === "high-to-low") {
+        filteredproducts.sort((a, b) => b.price - a.price);
+    } else if (sortoption === "high-rating") {
+        filteredproducts.sort((a, b) => b.rating.average - a.rating.average);
+    }
+
+    displayproducts(filteredproducts);
+}
+
+textbox.addEventListener("input", updateproducts);
+selectitem.addEventListener("change", updateproducts);
+sortingproduct.addEventListener("change", updateproducts);
+
+carttoggle.addEventListener("click", function() {
+    displaycart.hidden = !displaycart.hidden;
+    const isexpanded = !displaycart.hidden;
+    carttoggle.setAttribute("aria-expanded", String(isexpanded));
+    carttoggle.setAttribute("aria-label", `${isexpanded ? "Hide" : "View"} basket, ${cartcount.innerText} items`);
+
+    if (isexpanded) {
+        displaycart.scrollIntoView({ block: "nearest" });
+    }
+});
+
+document.addEventListener("click", function(event) {
+    const clickpath = event.composedPath();
+    if (
+        displaycart.hidden ||
+        clickpath.includes(displaycart) ||
+        clickpath.includes(carttoggle)
+    ) {
+        return;
+    }
+
+    displaycart.hidden = true;
+    carttoggle.setAttribute("aria-expanded", "false");
+    carttoggle.setAttribute("aria-label", `View basket, ${cartcount.innerText} items`);
+});
+
+function addtocard(productid) {
+    const productfind = products.find((item) => item.id === productid);
+    if (!productfind) {
+        console.log("Product not found");
+        return;
+    }
+
+    const existingcart = cart.find((item) => item.id === productid);
+    if (productfind.stock === 0) {
+        console.log("Product is out of stock");
+        return;
+    }
+
+    if (existingcart) {
+        if (existingcart.quantity < productfind.stock) {
+            existingcart.quantity++;
+            savecart();
+        } else {
+            console.log("Cart maximum quantity reached");
+            return;
+        }
+    } else {
+        cart.push({
+            id: productfind.id,
+            name: productfind.name,
+            price: productfind.price,
+            quantity: 1
+        });
+         savecart();
+    }
+
+
+    console.log(cart);
+   
+    cartdispl();
+}
+
+function cartdispl() {
+    const itemcount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartcount.innerText = itemcount;
+    carttoggle.setAttribute("aria-label", `${displaycart.hidden ? "View" : "Hide"} basket, ${itemcount} items`);
+    displaycart.innerHTML = "";
+    if (cart.length === 0) {
+        displaycart.innerText = "Cart is empty";
+        return;
+    }
+
+    cart.forEach((item) => {
+        const cartitem = document.createElement("div");
+        cartitem.classList.add("cart-item");
+        const product = products.find((currentproduct) => currentproduct.id === item.id);
+        const image = document.createElement("img");
+        image.src = product.image;
+        image.alt = item.name;
+        const details = document.createElement("div");
+        details.classList.add("cart-item-details");
+        const name = document.createElement("h4");
+        name.innerText = item.name;
+        name.classList.add("cart-name");
+        const price = document.createElement("p");
+        price.innerText = `Rs. ${item.price}`;
+        price.classList.add("cart-price");
+        const quantity = document.createElement("p");
+        quantity.innerText = `Quantity: ${item.quantity}`;
+        quantity.classList.add("cart-quantity");
+
+        details.append(name, price, quantity);
+        cartitem.append(image, details);
+        // plus button
+       const plusbutton = document.createElement("button");
+plusbutton.innerText = "+";
+
+plusbutton.addEventListener("click", function () {
+
+    const originalProduct = products.find((product) => {
+        return product.id === item.id;
+    });
+
+    if (item.quantity < originalProduct.stock) {
+
+        item.quantity++;
+
+        savecart();
+
+        cartdispl();
+
+    } else {
+
+        console.log("Cart maximum quantity reached");
+
+    }
+
+});
+
+// minus button
+
+     const minbtn = document.createElement("button");
+     minbtn.innerText = "-";
+     minbtn.addEventListener("click",function(){
+  
+        if(item.quantity>1){
+            item.quantity--;
+            savecart();
+
+            cartdispl();
+        }
+
+        else{
+            cart = cart.filter((currentitem)=>{
+             return     currentitem.id !== item.id;
+            });
+            savecart();
+            cartdispl();
+        }
+     });
+
+     // remove button
+     const removebtn = document.createElement("button");
+      removebtn.innerText = "Remove";
+      
+     removebtn.addEventListener("click",function(){
+
+        cart = cart.filter((currentitem)=>{
+
+            return currentitem.id !== item.id;
+
+        });
+
+        savecart();
+        cartdispl();
+
+
+
+
+     })
+        plusbutton.setAttribute("aria-label", `Increase ${item.name} quantity`);
+        minbtn.setAttribute("aria-label", `Decrease ${item.name} quantity`);
+        removebtn.classList.add("remove-item");
+        cartitem.append(plusbutton, minbtn, removebtn);
+        displaycart.append(cartitem);
+    });
+
+
+    // discount function
+function discountcal(total) {
+    if (total >= 5000) {
+        return (total * 10) / 100;
+    } else {
+        return 0;
+    }
+}
+
+const subtotal = cart.reduce((sum, item) => {
+    return sum + item.price * item.quantity;
+}, 0);
+
+
+
+// shiping charges 
+function shippingcharges(total) {
+    if (total >= 1000) {
+        return 0;
+    } else {
+        return 100;
+    }
+}
+
+
+ 
+const shipping  =  shippingcharges(subtotal);
+
+const discount = discountcal(subtotal);
+const finaltotal = subtotal - discount;
+const finalamount = finaltotal + shipping;
+
+
+const totaldisplay = document.createElement("div");
+totaldisplay.classList.add("cart-summary");
+
+[
+    ["Subtotal", subtotal, ""],
+    ["Discount", discount, "summary-discount"],
+    ["Shipping", shipping, ""],
+    ["Total", finalamount, "summary-total"]
+].forEach(([label, amount, className]) => {
+    const row = document.createElement("p");
+    row.classList.add("summary-row");
+    if (className) row.classList.add(className);
+
+    const rowLabel = document.createElement("span");
+    rowLabel.innerText = label;
+    const rowAmount = document.createElement("strong");
+    rowAmount.innerText = `Rs. ${amount}`;
+
+    row.append(rowLabel, rowAmount);
+    totaldisplay.append(row);
+});
+
+displaycart.append(totaldisplay);
+}
+
+loadcart();
+updateproducts();
+
+
+cartdispl();
+
+         
+    
+    
+
+
+
+
+
+  
+    </script>
+    
+</body>
+</html>
